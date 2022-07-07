@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="d-block mx-auto mt-4 text-center" style="width: 300px">
+    {% set quiz_variant = random(['quess_country', 'quess_capital']) %}
+    {% if quiz_variant == 'quess_country' %}
+        <div class="font-weight-bold text-center">Do jakiego Państwa należy ta flaga?</div>
+    {% else %}
+        <div class="font-weight-bold mx-auto text-center">Podaj stolicę danego Państwa</div>
+    {% endif %}
+
+{% for country in countries %}
+    {% if loop.index == '1' %}
+    <div data-number="{{ loop.index }}" class="active_question">
+    {% if quiz_variant == 'quess_country' %}
+        <div class="d-block m-3"><img alt="flag" width="200" height="150" src="build/images/{{ country.flag }}"></div>
+    {% else %}
+        <div class="d-block text-center m-3">{{ country.name }}</div>
+    {% endif %}
+        <div class="text-center m-2">
+        <form id="user-answer-form">
+            <input  type="text" id="user-answer">
+        </form>
+        </div>
+            <button class="check_answer btn btn-primary btn-sm">Sprawdź</button>
+    {% if quiz_variant == 'quess_country' %}
+        <div id="correct-answer" hidden class="m-2 font-weight-bold">{{ country.name }}</div>
+    {% else %}
+        <div id="correct-answer" hidden class="m-2 font-weight-bold">{{ country.capital }}</div>
+    {% endif %}
+        <div id="correct_butt" hidden class="m-2"><button class="btn btn-success btn-sm">Poprawnie</button></div>
+        <div id="not_correct_butt" hidden class="m-2"><button class="btn btn-outline-danger btn-sm">Niepoprawnie</button></div>
+        <button id="next_butt" hidden data-number="{{ loop.index }}" class="btn btn-dark btn-sm">Następne pytanie</button>
+    </div>
+        {% elseif loop.last %}
+            <div data-number="{{ loop.index }}" class="hidden">
+                {% if quiz_variant == 'quess_country' %}
+                    <div class="d-block m-3"><img alt="flag" width="200" height="150" src="build/images/{{ country.flag }}"></div>
+                {% else %}
+                    <div class="d-block text-center m-3">{{ country.name }}</div>
+                {% endif %}
+                <div class="text-center m-2">
+                <form id="user-answer-form">
+                    <input type="text" id="user-answer">
+                </form>
+                </div>
+                    <button class="check_answer btn btn-primary btn-sm">Sprawdź</button>
+                {% if quiz_variant == 'quess_country' %}
+                    <div id="correct-answer" hidden class="m-2 font-weight-bold">{{ country.name }}</div>
+                {% else %}
+                    <div id="correct-answer" hidden class="m-2 font-weight-bold">{{ country.capital }}</div>
+                {% endif %}
+                <div id="correct_butt" hidden class="m-2"><button class="btn btn-success btn-sm">Poprawnie</button></div>
+                <div id="not_correct_butt" hidden class="m-2"><button class="btn btn-outline-danger btn-sm">Niepoprawnie</button></div>
+                <form method="post" action="/save-results" id="summary_form" name="results" hidden>
+                    <input type="number" id="correct_answers_counter" name="correct_answers" value=0><br><br>
+                    <input type="number" id="bad_answers_counter" name="bad_answers" value=0><br><br>
+                    <input type="submit" value="Submit">
+                </form>
+                <div id="summary" class="hidden">
+                    Poprawnych odpowiedzi: <span id="correct"></span><br><br>
+                    Błędnych odpowiedzi: <span id="not_correct"></span><br><br>
+                </div>
+            </div>
+    {% else %}
+        <div data-number="{{ loop.index }}" class="hidden">
+            {% if quiz_variant == 'quess_country' %}
+                <div class="d-block m-3"><img alt="flag" width="200" height="150" src="build/images/{{ country.flag }}"></div>
+            {% else %}
+                <div class="d-block text-center m-3">{{ country.name }}</div>
+            {% endif %}
+            <div class="text-center m-2">
+            <form id="user-answer-form">
+                <input type="text" id="user-answer">
+            </form>
+            </div>
+                <button class="check_answer btn btn-primary btn-sm" data-number="{{ loop.index }}">Sprawdź</button>
+            {% if quiz_variant == 'quess_country' %}
+                <div id="correct-answer" hidden class="m-2 font-weight-bold">{{ country.name }}</div>
+            {% else %}
+                <div id="correct-answer" hidden class="m-2 font-weight-bold">{{ country.capital }}</div>
+            {% endif %}
+            <div id="correct_butt" hidden class="m-2"><button class="btn btn-success btn-sm">Poprawnie</button></div>
+            <div id="not_correct_butt" hidden class="m-2"><button class="btn btn-outline-danger btn-sm">Niepoprawnie</button></div>
+            <button id="next_butt" hidden data-number="{{ loop.index }}" class="btn btn-dark btn-sm">Następne pytanie</button>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock %}

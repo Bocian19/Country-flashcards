@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block jsuites %}
+<script src="https://jsuites.net/v4/jsuites.js"></script>
+<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+{% endblock %}
+
+{% block body %}
+    <div class="m-3">
+    <div class="mx-auto" style="width: 300px"><h1>Wyniki quizu</h1></div>
+    <p>Wybierz zakres dat</p>
+    <div>Od: </div><input id='calendar'> <div>Do: </div><input id='calendar2'><br>
+    <div id="from_date" hidden></div>
+    <div id="until_date" hidden></div>
+    <table class="table table-sm table-striped">
+        <thead class="thead-dark">
+        <th scope="col">#</th><th scope="col">Data</th><th scope="col">Poprawne odpowiedzi</th><th scope="col">Błędne odpowiedzi</th>
+        </thead>
+        {% for result in results %}
+            <tr class="">
+                <th scope="row">{{ loop.index }}</th><td id="date">{{ result.date|format_datetime(pattern="Y-MM-dd H:mm:ss") }}</td><td>{{ result.correctAnswer }}</td><td>{{ result.notCorrectAnswer }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ path('homepage') }}">Strona startowa</a>
+        </li>
+    </ul>
+    </div>
+{% endblock %}
