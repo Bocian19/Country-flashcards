@@ -12,7 +12,7 @@ class ResultController extends AbstractController
 {
 
     /**
-     * @Route("/save-results", name="save-results")
+     * @Route("/save-results", name="save-results", methods={"POST"})
      */
     public function save(ManagerRegistry $doctrine, Request $request)
     {
@@ -33,7 +33,6 @@ class ResultController extends AbstractController
             'bad_answers' => $bad_answers,
             'correct_answers' => $correct_answers
         ]);
-
     }
 
 

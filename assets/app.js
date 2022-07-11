@@ -8,6 +8,7 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 
+const $ = require('jquery');
 // start the Stimulus application
 import './bootstrap';
 
@@ -67,9 +68,21 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let form = button.parentElement.querySelector("#summary_form");
-            if (form) {
-                setTimeout("document.results.submit();",1500);
-            }
+
+            if ( form ) {
+                var correct_answers = document.getElementById("correct_answers_counter").value;
+                var bad_answers = document.getElementById("bad_answers_counter").value;
+                    $.ajax({
+                        type: "POST",
+                        data: {correct_answers: correct_answers, bad_answers: bad_answers},
+                        url: "/save-results"
+                    }).done(function (data) { // data what is sent back by the php page
+                        $('#ajax').html(data); // display data
+                    })
+                }
+
+                // setTimeout("document.results.submit();",1500);
+            // }
 
         })
 
